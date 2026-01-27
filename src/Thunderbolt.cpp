@@ -518,9 +518,10 @@ bool Thunderbolt::process_satellites()
 	// TSIP 0x6D: [fix dimension][fix mode][num SVs]... (DOPs + PRNs follow)
 	// We only capture the SV count for now.
 	if (_rcv_packet.getLength() >= 3) {
-		_rcv_packet.getNextByte();
-		_rcv_packet.getNextByte();
-		_status.n_satellites = _rcv_packet.getNextByte();
+		const uint8_t sv_count = _rcv_packet.getPacketByte(2);
+		if (sv_count <= 32) {
+			_status.n_satellites = sv_count;
+		}
 	}
 	return true;
 }
