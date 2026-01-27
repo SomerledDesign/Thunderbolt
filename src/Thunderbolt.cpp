@@ -515,7 +515,13 @@ bool Thunderbolt::process_software_version_info()
 bool Thunderbolt::process_satellites()
 {
 	DEBUG_PRINT(__FUNCTION__);
-	// todo process sat packets
+	// TSIP 0x6D: [fix dimension][fix mode][num SVs]... (DOPs + PRNs follow)
+	// We only capture the SV count for now.
+	if (_rcv_packet.getLength() >= 3) {
+		_rcv_packet.getNextByte();
+		_rcv_packet.getNextByte();
+		_status.n_satellites = _rcv_packet.getNextByte();
+	}
 	return true;
 }
 
