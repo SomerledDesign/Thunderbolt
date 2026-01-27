@@ -515,12 +515,13 @@ bool Thunderbolt::process_software_version_info()
 bool Thunderbolt::process_satellites()
 {
 	DEBUG_PRINT(__FUNCTION__);
-	// TSIP 0x6D: [fix dimension][fix mode][num SVs]... (DOPs + PRNs follow)
-	// We only capture the SV count for now.
-	if (_rcv_packet.getLength() >= 3) {
-		const uint8_t sv_count = _rcv_packet.getPacketByte(2);
-		if (sv_count <= 32) {
-			_status.n_satellites = sv_count;
+	// TSIP 0x6D report: length = 16 + Nsvs (1-byte fix mode + 4 floats + PRN list)
+	// We only capture the SV count derived from payload length.
+	const size_t len = _rcv_packet.getLength();
+	if (len >= 16) {
+		const size_t nsvs = len - 16;
+		if (nsvs <= 32) {
+			_status.n_satellites = static_cast<int>(nsvs);
 		}
 	}
 	return true;
