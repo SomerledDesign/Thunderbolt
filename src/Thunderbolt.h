@@ -101,6 +101,7 @@ public:
 		uint32_t last_satellites_ms = 0;
 	};
 	const ReportStats& getReportStats() const { return _reportStats; };
+	void requestSoftwareVersion();
 
 	int  readDataBytes(uint8_t *dst, int n);
 

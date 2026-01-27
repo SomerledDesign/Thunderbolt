@@ -461,6 +461,15 @@ bool Thunderbolt::process_report() {
 	return ok;
 }
 
+void Thunderbolt::requestSoftwareVersion()
+{
+	_xmt_packet.clear();
+	_xmt_packet.command = CMD_REQ_SOFTWARE_VERSION;
+	_xmt_packet.length = 0;
+	beginCommand(_xmt_packet.command);
+	endCommand();
+}
+
 void Thunderbolt::noteReport(ReportType code) {
 	uint32_t now = millis();
 	switch (code) {
