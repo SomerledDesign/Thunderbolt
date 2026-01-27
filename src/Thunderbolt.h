@@ -104,6 +104,7 @@ public:
 	};
 	const ReportStats& getReportStats() const { return _reportStats; };
 	void requestSoftwareVersion();
+	void requestGpsSelectionList();
 
 	int  readDataBytes(uint8_t *dst, int n);
 

@@ -470,6 +470,15 @@ void Thunderbolt::requestSoftwareVersion()
 	endCommand();
 }
 
+void Thunderbolt::requestGpsSelectionList()
+{
+	_xmt_packet.clear();
+	_xmt_packet.command = CMD_REQ_GPS_SELECTION_LIST;
+	_xmt_packet.length = 0;
+	beginCommand(_xmt_packet.command);
+	endCommand();
+}
+
 void Thunderbolt::noteReport(ReportType code) {
 	uint32_t now = millis();
 	switch (code) {
