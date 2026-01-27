@@ -439,11 +439,18 @@ bool Thunderbolt::process_report() {
 			break;
 		case RPT_SATELLITES:
 			ok = process_satellites(); break;
-		case RPT_SOFTWARE_VERSION:
-			ok = process_software_version_info(); break;
-		default:
-			DEBUG_PRINTHEX("Unhandled Report = ", _rcv_packet.code);
-			break;
+	case RPT_SOFTWARE_VERSION:
+		ok = process_software_version_info(); break;
+	default:
+		DEBUG_PRINTHEX("Unhandled Report = ", _rcv_packet.code);
+		break;
+	}
+
+	if (ok) {
+		noteReport(_rcv_packet.code);
+		if (_rcv_packet.code == RPT_TSIP_SUPERPACKET_8F) {
+			noteSubReport(_rcv_packet.getSubReportID());
+		}
 	}
 
 	// give user's packet processors a swipe
@@ -452,6 +459,33 @@ bool Thunderbolt::process_report() {
 	// ready the packet buffer
 	_rcv_packet.clear();
 	return ok;
+}
+
+void Thunderbolt::noteReport(ReportType code) {
+	uint32_t now = millis();
+	switch (code) {
+		case RPT_HEALTH:
+			_reportStats.health++;
+			_reportStats.last_health_ms = now;
+			break;
+		case RPT_SATELLITES:
+			_reportStats.satellites++;
+			_reportStats.last_satellites_ms = now;
+			break;
+		default:
+			break;
+	}
+}
+
+void Thunderbolt::noteSubReport(SubReportID_8F sub) {
+	uint32_t now = millis();
+	if (sub == SUBRPT_PRIMARY_TIMING_PACKET) {
+		_reportStats.primary_timing++;
+		_reportStats.last_primary_ms = now;
+	} else if (sub == SUBRPT_SUPPLEMENTAL_TIMING_PACKET) {
+		_reportStats.supplemental_timing++;
+		_reportStats.last_supplemental_ms = now;
+	}
 }
 
 void Thunderbolt::inform_external_processors(bool isProcessed)

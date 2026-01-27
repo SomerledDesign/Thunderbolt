@@ -90,6 +90,17 @@ public:
 	const GPSVersion& getVersion() const { return _version; };
 	const PosFix& getPositionFix() const { return _pfix; };
 	const VelFix& getVelocityFix() const { return _vfix; };
+	struct ReportStats {
+		uint32_t primary_timing = 0;
+		uint32_t supplemental_timing = 0;
+		uint32_t health = 0;
+		uint32_t satellites = 0;
+		uint32_t last_primary_ms = 0;
+		uint32_t last_supplemental_ms = 0;
+		uint32_t last_health_ms = 0;
+		uint32_t last_satellites_ms = 0;
+	};
+	const ReportStats& getReportStats() const { return _reportStats; };
 
 	int  readDataBytes(uint8_t *dst, int n);
 
@@ -138,6 +149,8 @@ private:
 	bool process_time();
 	bool process_v_ENU();
 	bool process_v_XYZ();
+	void noteReport(ReportType code);
+	void noteSubReport(SubReportID_8F sub);
 	void inform_external_processors(bool isProcessed);
 	void update_FractionalSeconds();
 	void update_pps_timestamp(uint32_t tmrVal);
@@ -148,6 +161,7 @@ private:
 	GPSVersion  _version;
 	PosFix		_pfix;
 	VelFix		_vfix;
+	ReportStats _reportStats;
 
 	TsipPacket _rcv_packet;
 	TsipPacket _xmt_packet;
