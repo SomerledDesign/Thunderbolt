@@ -479,9 +479,22 @@ void Thunderbolt::requestGpsSelectionList()
 	endCommand();
 }
 
+void Thunderbolt::requestHealth()
+{
+	_xmt_packet.clear();
+	_xmt_packet.command = static_cast<CommandID>(0x26);
+	_xmt_packet.length = 0;
+	beginCommand(_xmt_packet.command);
+	endCommand();
+}
+
 void Thunderbolt::noteReport(ReportType code) {
 	uint32_t now = millis();
 	switch (code) {
+		case RPT_ADDL_STATUS:
+			_reportStats.addl_status++;
+			_reportStats.last_addl_status_ms = now;
+			break;
 		case RPT_SOFTWARE_VERSION:
 			_reportStats.software_version++;
 			_reportStats.last_software_version_ms = now;

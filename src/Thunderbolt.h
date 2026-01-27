@@ -94,17 +94,20 @@ public:
 		uint32_t primary_timing = 0;
 		uint32_t supplemental_timing = 0;
 		uint32_t software_version = 0;
+		uint32_t addl_status = 0;
 		uint32_t health = 0;
 		uint32_t satellites = 0;
 		uint32_t last_primary_ms = 0;
 		uint32_t last_supplemental_ms = 0;
 		uint32_t last_software_version_ms = 0;
+		uint32_t last_addl_status_ms = 0;
 		uint32_t last_health_ms = 0;
 		uint32_t last_satellites_ms = 0;
 	};
 	const ReportStats& getReportStats() const { return _reportStats; };
 	void requestSoftwareVersion();
 	void requestGpsSelectionList();
+	void requestHealth();
 
 	int  readDataBytes(uint8_t *dst, int n);
 
