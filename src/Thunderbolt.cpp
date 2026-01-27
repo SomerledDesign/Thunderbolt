@@ -473,6 +473,10 @@ void Thunderbolt::requestSoftwareVersion()
 void Thunderbolt::noteReport(ReportType code) {
 	uint32_t now = millis();
 	switch (code) {
+		case RPT_SOFTWARE_VERSION:
+			_reportStats.software_version++;
+			_reportStats.last_software_version_ms = now;
+			break;
 		case RPT_HEALTH:
 			_reportStats.health++;
 			_reportStats.last_health_ms = now;

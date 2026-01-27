@@ -93,10 +93,12 @@ public:
 	struct ReportStats {
 		uint32_t primary_timing = 0;
 		uint32_t supplemental_timing = 0;
+		uint32_t software_version = 0;
 		uint32_t health = 0;
 		uint32_t satellites = 0;
 		uint32_t last_primary_ms = 0;
 		uint32_t last_supplemental_ms = 0;
+		uint32_t last_software_version_ms = 0;
 		uint32_t last_health_ms = 0;
 		uint32_t last_satellites_ms = 0;
 	};
