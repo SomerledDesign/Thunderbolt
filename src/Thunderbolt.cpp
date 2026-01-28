@@ -435,10 +435,12 @@ bool Thunderbolt::process_report() {
 					ok = process_time(); break;
 				case SUBRPT_SUPPLEMENTAL_TIMING_PACKET:
 					ok = process_supplemental_timing(); break;
+				case SUBRPT_INDIVIDUAL_SATELLITE_SOLUTIONS:
+					ok = true; break;
 				default:
-	_reportStats.unknown_subreports_8f++;
-	_reportStats.last_unknown_subreport_8f = _rcv_packet.getSubReportID();
-	_reportStats.last_unknown_subreport_8f_ms = millis();
+					_reportStats.unknown_subreports_8f++;
+					_reportStats.last_unknown_subreport_8f = _rcv_packet.getSubReportID();
+					_reportStats.last_unknown_subreport_8f_ms = millis();
 					DEBUG_PRINTHEX("Unhandled 8F Report = ", _rcv_packet.getSubReportID());
 					break;
 			}
