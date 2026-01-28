@@ -115,6 +115,7 @@ public:
 	void requestGpsSelectionList();
 	void requestHealth();
 	void requestAdditionalStatus();
+	void setRawByteCallback(void (*cb)(uint8_t)) { _rawByteCallback = cb; }
 
 	int  readDataBytes(uint8_t *dst, int n);
 
@@ -186,6 +187,7 @@ private:
 	uint32_t _last_time_stamp;
 	uint32_t _ms_per_second;
 	time_t _watchdog;
+	void (*_rawByteCallback)(uint8_t) = nullptr;
 };
 
 #endif

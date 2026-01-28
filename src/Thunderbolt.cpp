@@ -137,7 +137,11 @@ bool Thunderbolt::readSerial() {
 	bool retval = false;
 	while (_serial_stream->available() > 0)
 	{
-		_rcv_packet.encode(_serial_stream->read());
+		const uint8_t byte = _serial_stream->read();
+		if (_rawByteCallback) {
+			_rawByteCallback(byte);
+		}
+		_rcv_packet.encode(byte);
 		if (_rcv_packet.isComplete())
 		{
 			process_report();
