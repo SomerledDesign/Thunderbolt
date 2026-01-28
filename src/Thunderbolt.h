@@ -95,6 +95,12 @@ public:
 		uint32_t supplemental_timing = 0;
 		uint32_t software_version = 0;
 		uint32_t addl_status = 0;
+		uint32_t unknown_reports = 0;
+		uint8_t last_unknown_report = 0;
+		uint32_t last_unknown_report_ms = 0;
+		uint32_t unknown_subreports_8f = 0;
+		uint8_t last_unknown_subreport_8f = 0;
+		uint32_t last_unknown_subreport_8f_ms = 0;
 		uint32_t health = 0;
 		uint32_t satellites = 0;
 		uint32_t last_primary_ms = 0;

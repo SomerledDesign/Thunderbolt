@@ -432,6 +432,9 @@ bool Thunderbolt::process_report() {
 				case SUBRPT_SUPPLEMENTAL_TIMING_PACKET:
 					ok = process_supplemental_timing(); break;
 				default:
+	_reportStats.unknown_subreports_8f++;
+	_reportStats.last_unknown_subreport_8f = _rcv_packet.getSubReportID();
+	_reportStats.last_unknown_subreport_8f_ms = millis();
 					DEBUG_PRINTHEX("Unhandled 8F Report = ", _rcv_packet.getSubReportID());
 					break;
 			}
@@ -442,6 +445,9 @@ bool Thunderbolt::process_report() {
 	case RPT_SOFTWARE_VERSION:
 		ok = process_software_version_info(); break;
 	default:
+	_reportStats.unknown_reports++;
+	_reportStats.last_unknown_report = _rcv_packet.code;
+	_reportStats.last_unknown_report_ms = millis();
 		DEBUG_PRINTHEX("Unhandled Report = ", _rcv_packet.code);
 		break;
 	}
