@@ -448,8 +448,12 @@ bool Thunderbolt::process_report() {
 			break;
 		case RPT_SATELLITES:
 			ok = process_satellites(); break;
-	case RPT_SOFTWARE_VERSION:
-		ok = process_software_version_info(); break;
+		case RPT_SOFTWARE_VERSION:
+			ok = process_software_version_info(); break;
+		case 0x67:
+			ok = true; break;
+		case 0x18:
+			ok = true; break;
 	default:
 	_reportStats.unknown_reports++;
 	_reportStats.last_unknown_report = _rcv_packet.code;
