@@ -494,6 +494,15 @@ void Thunderbolt::requestHealth()
 	endCommand();
 }
 
+void Thunderbolt::requestAdditionalStatus()
+{
+	_xmt_packet.clear();
+	_xmt_packet.command = CMD_WARM_START_SELF_TEST;
+	_xmt_packet.length = 0;
+	beginCommand(_xmt_packet.command);
+	endCommand();
+}
+
 void Thunderbolt::noteReport(ReportType code) {
 	uint32_t now = millis();
 	switch (code) {

@@ -114,6 +114,7 @@ public:
 	void requestSoftwareVersion();
 	void requestGpsSelectionList();
 	void requestHealth();
+	void requestAdditionalStatus();
 
 	int  readDataBytes(uint8_t *dst, int n);
 
