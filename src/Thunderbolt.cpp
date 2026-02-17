@@ -437,6 +437,8 @@ bool Thunderbolt::process_report() {
 					ok = process_supplemental_timing(); break;
 				case SUBRPT_INDIVIDUAL_SATELLITE_SOLUTIONS:
 					ok = true; break;
+				case 0xB1:
+					ok = true; break;
 				default:
 					_reportStats.unknown_subreports_8f++;
 					_reportStats.last_unknown_subreport_8f = _rcv_packet.getSubReportID();
@@ -450,6 +452,8 @@ bool Thunderbolt::process_report() {
 			ok = process_satellites(); break;
 		case RPT_SOFTWARE_VERSION:
 			ok = process_software_version_info(); break;
+		case 0x05:
+			ok = true; break;
 		case 0x67:
 			ok = true; break;
 		case 0x18:
@@ -734,7 +738,23 @@ bool Thunderbolt::process_primary_timing() {
 
 bool Thunderbolt::process_health() {
 	DEBUG_PRINT(__FUNCTION__);
-	_status.health = static_cast<GPSHealth>(_rcv_packet.packet_data[0]);
+	const uint8_t raw = _rcv_packet.packet_data[0];
+	switch (raw) {
+		case HLTH_DOING_FIXES:
+		case HLTH_NO_GPSTIME:
+		case HLTH_PDOP_TOO_HIGH:
+		case HLTH_SV_UNAVAILABLE:
+		case HLTH_SATELLITES_NONE:
+		case HLTH_SATELLITES_ONE:
+		case HLTH_SATELLITES_TWO:
+		case HLTH_SATELLITES_THREE:
+		case HLTH_SATELLITES_OVERDETERMINED:
+			_status.health = static_cast<GPSHealth>(raw);
+			break;
+		default:
+			_status.health = HLTH_UNKNOWN;
+			break;
+	}
 	return true;
 }
 
